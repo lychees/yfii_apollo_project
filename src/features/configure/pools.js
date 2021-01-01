@@ -65,8 +65,8 @@ export const pools = [
     tokenDescriptionUrl: '',
     tokenDescriptionUrl2: '',
     earnedToken: 'iBUSD',
-    earnedTokenAddress: '0xA200b344e7f52B2351933a9Dc919E5189748016F',
-    earnContractAddress: '0xA200b344e7f52B2351933a9Dc919E5189748016F',
+    earnedTokenAddress: '0xd2c17eBf8DEdB9bD9D32699820E5d254eccA86b7',
+    earnContractAddress: '0xd2c17eBf8DEdB9bD9D32699820E5d254eccA86b7',
     defaultApy: "42.63",
     pricePerFullShare: 1,
     pastPricePerFullShare: 1
