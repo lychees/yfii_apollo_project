@@ -15,26 +15,6 @@ import BigNumber from "bignumber.js";
 // path price: 
 export const pools = [
   {
-    id: 'usdc',
-    name: 'USDC',  
-    token: 'USDC',
-    tokenDescription: 'USDC',
-    tokenAddress: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',    
-    tokenAddress: '',
-    tokenDecimals: 18,
-    itokenDecimals: 18,
-    depostLimit:0,
-    depostAlert:'',
-    tokenDescriptionUrl: '',
-    tokenDescriptionUrl2: '',
-    earnedToken: 'iUSDC',
-    earnedTokenAddress: '0xaeb98fd0ba5acdc9471ee868a6fdd85ba1f20c6a',
-    earnContractAddress: '0xaeb98fd0ba5acdc9471ee868a6fdd85ba1f20c6a',
-    defaultApy: "39.54",
-    pricePerFullShare: 1,
-    pastPricePerFullShare: 1
-  },
-  {
     id: 'dai',
     name: 'DAI',  
     token: 'DAI',
