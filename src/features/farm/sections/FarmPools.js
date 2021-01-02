@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import classNames from "classnames";
 import {useTranslation} from 'react-i18next';
 import {makeStyles} from "@material-ui/core/styles";
@@ -14,7 +14,7 @@ const useStyles = makeStyles(farmItemStyle);
 
 export default () => {
   const classes = useStyles();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {pools, poolsInfo, fetchPoolsInfo} = useFetchPoolsInfo();
 
   useEffect(() => {

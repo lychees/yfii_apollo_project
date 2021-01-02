@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { erc20ABI } from "../../configure";
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   LIQUIDITY_FETCH_APPROVAL_BEGIN,
   LIQUIDITY_FETCH_APPROVAL_SUCCESS,

@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React,{ useEffect } from 'react';
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,15 +6,15 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
+// import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import CustomButtons from "components/CustomButtons/Button.js";
 import Avatar from '@material-ui/core/Avatar';
-import { isEmpty } from 'features/helpers/utils';
+// import { isEmpty } from 'features/helpers/utils';
 import {StyledTableCell,StyledTableRow,stakePoolsStyle} from "../jss/sections/stakePoolsStyle";
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
+// import InputBase from '@material-ui/core/InputBase';
+// import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import leftImage from 'assets/img/stake-head-left.png';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(stakePoolsStyle);
 export default function StakePools(props) {
   const { fromPage } = props;
   const classes = useStyles();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { pools, poolsInfo, fetchPoolsInfo } = useFetchPoolsInfo();
 
   useEffect(() => {
@@ -40,12 +40,12 @@ export default function StakePools(props) {
         <h3 className={classes.secondTitle}>{t('Stake-Second-Title')}</h3>
       </Grid>
       {
-        fromPage == 'page' && 
+        fromPage === 'page' && 
         <Hidden xsDown>
           <GridItem>
             <div className={classes.listHeader}>
-              <img className={classes.leftImage} src={leftImage} />
-              <img className={classes.rightImage} src={rightImage} />
+              <img className={classes.leftImage} src={leftImage} alt="leftImage" />
+              <img className={classes.rightImage} src={rightImage} alt="rightImage" />
               <div className={classes.mainTitle}>{t('Stake-List-Header-Main')}</div>
               <GridContainer >
                 <GridItem className={classNames({

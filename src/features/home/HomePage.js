@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 // @material-ui/core components
 // @material-ui/icons
-import Warning from "@material-ui/icons/Warning";
+// import Warning from "@material-ui/icons/Warning";
 // core components
 import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
 // sections for this page
 import SectionPools from "features/vault/sections/SectionPools.js";
-import StakePage from 'features/stake/sections/StakePools.js';
-import FarmPools from 'features/farm/sections/FarmPools';
+// import StakePage from 'features/stake/sections/StakePools.js';
+// import FarmPools from 'features/farm/sections/FarmPools';
 // style for this page
 // resource file
 // hooks
 
 export default function HomePage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);

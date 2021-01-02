@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import { useCallback } from 'react';
 import { earnContractABI } from '../config'
 import { useDispatch } from 'react-redux';
@@ -25,9 +26,9 @@ export function fetchPairPriceOut(amountString, poolIndex, tokenIndex) {
       const { home, liquidity } = getState();
       const { address, web3 } = home;
       const { pools, erc20Tokens } = liquidity;
-      const { pairPrice, pairPriceToken, name, canDepositTokenList } = pools[poolIndex];
-      if( canDepositTokenList[tokenIndex].includes(' lp') || amountString==0){
-        if(amountString==0) amountString = Number(amountString)
+      const { pairPriceToken, name, canDepositTokenList } = pools[poolIndex];
+      if( canDepositTokenList[tokenIndex].includes(' lp') || amountString===0){
+        if(amountString===0) amountString = Number(amountString)
         return dispatch({
           type: LIQUIDITY_FETCH_PAIR_PRICE_OUT_DONT_REQUEST,
           data: amountString,
@@ -37,11 +38,11 @@ export function fetchPairPriceOut(amountString, poolIndex, tokenIndex) {
       }
       let amount = new BigNumber(amountString).multipliedBy(new BigNumber(10).exponentiatedBy(erc20Tokens[name].tokenDecimals)).toString(10)
       const contract = new web3.eth.Contract(earnContractABI, pairPriceToken);
-      const outToken = canDepositTokenList[tokenIndex]=='eth'?'0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':erc20Tokens[canDepositTokenList[tokenIndex]].tokenContractAddress;
+      const outToken = canDepositTokenList[tokenIndex]==='eth'?'0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2':erc20Tokens[canDepositTokenList[tokenIndex]].tokenContractAddress;
       contract.methods.out(erc20Tokens[name].tokenContractAddress, outToken, amount).call({ from: address }).then(
         data => {
           const selectedTokenName = canDepositTokenList[tokenIndex];
-          const tokenDecimals = selectedTokenName=='eth'?18:erc20Tokens[selectedTokenName].tokenDecimals;
+          const tokenDecimals = selectedTokenName==='eth'?18:erc20Tokens[selectedTokenName].tokenDecimals;
           const newData = byDecimals(data,tokenDecimals).toFixed(4);
           dispatch({
             type: LIQUIDITY_FETCH_PAIR_PRICE_OUT_SUCCESS,

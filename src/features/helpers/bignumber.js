@@ -219,7 +219,7 @@ export function byDecimals(number, tokenDecimals = 18){
 }
 
 export function calculateReallyNum(total,sliderNum,formatNum=4){
-  if(sliderNum == undefined){
+  if(sliderNum === undefined){
     return byDecimals(0, 0).toFormat(formatNum);
   }
   return byDecimals(sliderNum/100*Number(total), 0).toFormat(formatNum);

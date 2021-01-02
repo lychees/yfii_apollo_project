@@ -78,15 +78,15 @@ export default function StakePool(props) {
 
   useEffect(() => {
     setIndex(Number(props.match.params.index) - 1);
-  }, [Number(props.match.params.index)]);
+  }, [props.match.params.index]);
 
   useEffect(() => {
     setIsNeedApproval(Boolean(allowance[index] === 0));
-  }, [allowance[index], index]);
+  }, [allowance, index]);
 
   useEffect(() => {
     setApprovalAble(!Boolean(fetchApprovalPending[index]));
-  }, [fetchApprovalPending[index], index]);
+  }, [fetchApprovalPending, index]);
 
   const onApproval = () => {
     fetchApproval(index);
@@ -94,7 +94,7 @@ export default function StakePool(props) {
 
   useEffect(() => {
     setStakeAble(!Boolean(fetchStakePending[index]));
-  }, [fetchStakePending[index], index]);
+  }, [fetchStakePending, index]);
 
   const onStake = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -117,7 +117,7 @@ export default function StakePool(props) {
     }
     const id = setInterval(func, 1000);
     return () => clearInterval(id);
-  },[canWithdrawTime[index]])
+  },[canWithdrawTime, index])
 
   const momentFormatTime = (timestamp) =>{
     return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
@@ -130,7 +130,7 @@ export default function StakePool(props) {
     const isDisableCanWithdrawTime = canWithdrawTimeIsZero || canWithdrawTimeIsMoreNowTime;
     const isPool4AndDisableCanWithDraw = Boolean(isPool4 && isDisableCanWithdrawTime)
     setWithdrawAble(!Boolean(isPending || isPool4AndDisableCanWithDraw || currentlyStakedIs0));
-  }, [currentlyStaked[index], fetchWithdrawPending[index], index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime]);
+  }, [index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime, fetchWithdrawPending, currentlyStaked]);
 
   const onWithdraw = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -141,7 +141,7 @@ export default function StakePool(props) {
     const isPending = Boolean(fetchClaimPending[index]);
     const rewardsAvailableIs0 = rewardsAvailable[index] === 0;
     setClaimAble(!Boolean(isPending || rewardsAvailableIs0));
-  }, [rewardsAvailable[index], fetchClaimPending[index], index]);
+  }, [fetchClaimPending, index, rewardsAvailable]);
 
   const onClaim = () => {
     fetchClaim(index);
@@ -156,7 +156,7 @@ export default function StakePool(props) {
     const isDisableCanWithdrawTime = canWithdrawTimeIsZero || canWithdrawTimeIsMoreNowTime;
     const isPool4AndDisableCanWithDraw = Boolean(isPool4 && isDisableCanWithdrawTime)
     setExitAble(!Boolean(isPending || isPool4AndDisableCanWithDraw || currentlyStakedAndRewardsAvailableIs0));
-  }, [currentlyStaked[index], rewardsAvailable[index], fetchExitPending[index], index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime]);
+  }, [index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime, fetchExitPending, currentlyStaked, rewardsAvailable]);
 
   const onExit = () => {
     fetchExit(index);
@@ -165,17 +165,17 @@ export default function StakePool(props) {
   useEffect(() => {
     const amount = byDecimals(balance[index], pools[index].tokenDecimals);
     setMyBalance(amount);
-  }, [balance[index], index]);
+  }, [balance, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(currentlyStaked[index], pools[index].tokenDecimals);
     setMyCurrentlyStaked(amount);
-  }, [currentlyStaked[index], index]);
+  }, [currentlyStaked, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(rewardsAvailable[index], pools[index].earnedTokenDecimals);
     setMyRewardsAvailable(amount);
-  }, [rewardsAvailable[index], index]);
+  }, [index, pools, rewardsAvailable]);
 
   useEffect(() => {
     if(halfTime[index] === 0) return;
@@ -194,7 +194,7 @@ export default function StakePool(props) {
     formatTime();
     const id = setInterval(formatTime, 1000);
     return () => clearInterval(id);
-  }, [halfTime[index], pools, index]);
+  }, [pools, index, halfTime, fetchHalfTime]);
 
   useEffect(() => {
     if (address) {
@@ -214,7 +214,7 @@ export default function StakePool(props) {
       }, 10000);
       return () => clearInterval(id);
     }
-  }, [address, index]);
+  }, [address, checkApproval, fetchBalance, fetchCanWithdrawTime, fetchCurrentlyStaked, fetchHalfTime, fetchRewardsAvailable, index]);
 
   return (
     <Grid container style={{paddingTop: '4px'}}>

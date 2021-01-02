@@ -10,7 +10,7 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 // hooks
 
 export default function LiquidityPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;

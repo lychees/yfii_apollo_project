@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import BigNumber from "bignumber.js";
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FARM_FETCH_CURRENTLY_STAKED_BEGIN,
   FARM_FETCH_CURRENTLY_STAKED_SUCCESS,

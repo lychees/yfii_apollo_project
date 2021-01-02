@@ -10,7 +10,7 @@ import {
 import checkboxes from "assets/jss/material-kit-pro-react/customCheckboxRadioSwitchStyle.js";
 import buttonGroup from "assets/jss/material-kit-pro-react/buttonGroupStyle.js";
 import tooltips from "assets/jss/material-kit-pro-react/tooltipsStyle.js";
-import { rgbToHex } from "@material-ui/core";
+// import { rgbToHex } from "@material-ui/core";
 
 const secondStyle = {
   opacity: '0.4',
@@ -48,6 +48,9 @@ const sectionPoolsStyle = theme => ({
   details: {
     display: 'flex',
     alignItems: 'center',
+    background: '#2C3040',
+    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.06)',
+    borderRadius: '8px',
   },
   column: {
     flexBasis: '33.33%',
@@ -184,12 +187,6 @@ const sectionPoolsStyle = theme => ({
         boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.06)',
         borderRadius: '8px',
     },
-    details:{
-      // padding: '12px 0',
-      background: '#2C3040',
-      boxShadow: '0 4px 8px 0 rgba(0,0,0,0.06)',
-      borderRadius: '8px',
-    },
     track: {
           height: 4,
           borderRadius: 2,
@@ -209,7 +206,6 @@ const sectionPoolsStyle = theme => ({
         fontSize: '18px',
         color: '#FFFFFF',
         lineHeight: '24px',
-        fontWeight: '600',
     },
     depositedBalanceSliderRoot:{
         color:'#FF2D82',

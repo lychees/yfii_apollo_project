@@ -4,22 +4,22 @@ import { useTranslation } from 'react-i18next';
 import BigNumber from 'bignumber.js'
 import moment from 'moment';
 import { byDecimals } from 'features/helpers/bignumber';
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import CustomButtons from "components/CustomButtons/Button.js";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableContainer from '@material-ui/core/TableContainer';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
-import Popover from '@material-ui/core/Popover';
+// import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import { isEmpty,inputLimitPass,inputFinalVal } from 'features/helpers/utils';
-import {StyledTableCell,StyledTableRow,stakePoolsStyle} from "../jss/sections/stakePoolsStyle";
+// import { isEmpty,inputLimitPass,inputFinalVal } from 'features/helpers/utils';
+import {stakePoolsStyle} from "../jss/sections/stakePoolsStyle";
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
@@ -31,7 +31,7 @@ const useStyles = makeStyles(stakePoolsStyle);
 
 export default function StakePool(props) {
   const classes = useStyles();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { address } = useConnectWallet();
   const { allowance, checkApproval } = useCheckApproval();
   const { pools } = useFetchPoolsInfo();
@@ -59,7 +59,7 @@ export default function StakePool(props) {
   const [ myRewardsAvailable, setMyRewardsAvailable] = useState(new BigNumber(rewardsAvailable[index]));
   const [ myHalfTime, setMyHalfTime] = useState(`0day 00:00:00`);
   const [ inputVal, setInputVal] = useState(0);
-  const [ anchorEl, setAnchorEl] = useState(null);
+  // const [ anchorEl, setAnchorEl] = useState(null);
   const [ canWithdrawTimeIsZero,setCanWithdrawTimeIsZero ] = useState(false);
   const [ canWithdrawTimeIsMoreNowTime,setCanWithdrawTimeIsMoreNowTime ] = useState(false);
 
@@ -78,15 +78,15 @@ export default function StakePool(props) {
 
   useEffect(() => {
     setIndex(Number(props.match.params.index) - 1);
-  }, [Number(props.match.params.index)]);
+  }, [props.match.params.index]);
 
   useEffect(() => {
     setIsNeedApproval(Boolean(allowance[index] === 0));
-  }, [allowance[index], index]);
+  }, [allowance, index]);
 
   useEffect(() => {
     setApprovalAble(!Boolean(fetchApprovalPending[index]));
-  }, [fetchApprovalPending[index], index]);
+  }, [fetchApprovalPending, index]);
 
   const onApproval = () => {
     fetchApproval(index);
@@ -94,7 +94,7 @@ export default function StakePool(props) {
 
   useEffect(() => {
     setStakeAble(!Boolean(fetchStakePending[index]));
-  }, [fetchStakePending[index], index]);
+  }, [fetchStakePending, index]);
 
   const onStake = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -117,7 +117,7 @@ export default function StakePool(props) {
     }
     const id = setInterval(func, 1000);
     return () => clearInterval(id);
-  },[canWithdrawTime[index]])
+  },[canWithdrawTime, index])
 
   const momentFormatTime = (timestamp) =>{
     return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
@@ -132,7 +132,7 @@ export default function StakePool(props) {
     const isPool4AndDisableCanWithDraw = Boolean(isPool4 && isDisableCanWithdrawTime)
     const isPool5AndDisableCanWithDraw = Boolean(isPool5 && isDisableCanWithdrawTime)
     setWithdrawAble(!Boolean(isPending || isPool4AndDisableCanWithDraw || currentlyStakedIs0 || isPool5AndDisableCanWithDraw));
-  }, [currentlyStaked[index], fetchWithdrawPending[index], index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime]);
+  }, [index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime, fetchWithdrawPending, currentlyStaked]);
 
   const onWithdraw = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -143,7 +143,7 @@ export default function StakePool(props) {
     const isPending = Boolean(fetchClaimPending[index]);
     const rewardsAvailableIs0 = rewardsAvailable[index] === 0;
     setClaimAble(!Boolean(isPending || rewardsAvailableIs0));
-  }, [rewardsAvailable[index], fetchClaimPending[index], index]);
+  }, [fetchClaimPending, index, rewardsAvailable]);
 
   const onClaim = () => {
     fetchClaim(index);
@@ -160,7 +160,7 @@ export default function StakePool(props) {
     const isPool4AndDisableCanWithDraw = Boolean(isPool4 && isDisableCanWithdrawTime)
     const isPool5AndDisableCanWithDraw = Boolean(isPool5 && isDisableCanWithdrawTime)
     setExitAble(!Boolean(isPending || isPool4AndDisableCanWithDraw || currentlyStakedAndRewardsAvailableIs0 || isPool5AndDisableCanWithDraw));
-  }, [currentlyStaked[index], rewardsAvailable[index], fetchExitPending[index], index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime]);
+  }, [index, canWithdrawTimeIsZero, canWithdrawTimeIsMoreNowTime, fetchExitPending, currentlyStaked, rewardsAvailable]);
 
   const onExit = () => {
     fetchExit(index);
@@ -169,17 +169,17 @@ export default function StakePool(props) {
   useEffect(() => {
     const amount = byDecimals(balance[index], pools[index].tokenDecimals);
     setMyBalance(amount);
-  }, [balance[index], index]);
+  }, [balance, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(currentlyStaked[index], pools[index].tokenDecimals);
     setMyCurrentlyStaked(amount);
-  }, [currentlyStaked[index], index]);
+  }, [currentlyStaked, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(rewardsAvailable[index], pools[index].earnedTokenDecimals);
     setMyRewardsAvailable(amount);
-  }, [rewardsAvailable[index], index]);
+  }, [index, pools, rewardsAvailable]);
 
   useEffect(() => {
     if(halfTime[index] === 0) return;
@@ -198,7 +198,7 @@ export default function StakePool(props) {
     formatTime();
     const id = setInterval(formatTime, 1000);
     return () => clearInterval(id);
-  }, [halfTime[index], pools, index]);
+  }, [pools, index, halfTime, fetchHalfTime]);
 
   useEffect(() => {
     if (address) {
@@ -218,7 +218,7 @@ export default function StakePool(props) {
       }, 10000);
       return () => clearInterval(id);
     }
-  }, [address, index]);
+  }, [address, checkApproval, fetchBalance, fetchCanWithdrawTime, fetchCurrentlyStaked, fetchHalfTime, fetchRewardsAvailable, index]);
 
   return (
     <Grid container style={{paddingTop: '4px'}}>
@@ -413,7 +413,7 @@ export default function StakePool(props) {
                   {
                     (canWithdrawTimeIsZero || canWithdrawTimeIsMoreNowTime) ? (
                       <div className={classes.stakeHintContainer}>
-                        <img src={require(`../../../images/stake-hint.svg`)} style={{marginRight:'3px'}}/>
+                        <img src={require(`../../../images/stake-hint.svg`)} style={{marginRight:'3px'}} alt='icon' />
                         {
                           canWithdrawTimeIsMoreNowTime ? (
                             <span className={classes.stakeHint}>{t('Stake-Pool-Unstake-Hint-Date')+momentFormatTime(canWithdrawTime[index] * 1000)}</span>
@@ -461,7 +461,7 @@ export default function StakePool(props) {
                   {
                     (canWithdrawTimeIsZero || canWithdrawTimeIsMoreNowTime) ? (
                       <div className={classes.stakeHintContainer} >
-                        <img src={require(`../../../images/stake-hint.svg`)} style={{marginRight:'3px'}}/>
+                        <img src={require(`../../../images/stake-hint.svg`)} style={{marginRight:'3px'}} alt='icon' />
                         {
                           canWithdrawTimeIsMoreNowTime ? (
                             <span className={classes.stakeHint}>{t('Stake-Pool-Unstake-Hint-Date')+momentFormatTime(canWithdrawTime[index] * 1000)}</span>

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import BigNumber from "bignumber.js";
 import { erc20ABI } from "../../configure";
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   LIQUIDITY_CHECK_APPROVAL_BEGIN,
   LIQUIDITY_CHECK_APPROVAL_SUCCESS,

@@ -1,8 +1,8 @@
 import React from "react";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 // nodejs library that concatenates classes
-import classNames from "classnames";
+// import classNames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 
@@ -19,7 +19,6 @@ const useStyles = makeStyles({
         fontSize: '18px',
         color: '#FFFFFF',
         lineHeight: '24px',
-        fontWeight: '600',
     },
 });
 

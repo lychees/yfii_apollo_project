@@ -4,9 +4,9 @@ import classNames from "classnames";
 import { useTranslation } from 'react-i18next';
 import { useConnectWallet } from '../../home/redux/hooks';
 import { useFetchBalances, useCheckApproval, useFetchApproval, useFetchZapOrSwap } from '../redux/hooks';
-import GridContainer from "components/Grid/GridContainer.js";
+// import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import Card from "components/Card/Card.js";
+// import Card from "components/Card/Card.js";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomSlider from 'components/CustomSlider/CustomSlider';
 import FormControl from '@material-ui/core/FormControl';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(zapCommandStyle);
 
 export default function ZapCommand() {
     const classes = useStyles();
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { web3, address } = useConnectWallet();
     const { tokens, fetchBalances } = useFetchBalances();
     const { allowance, checkApproval } = useCheckApproval();
@@ -38,15 +38,15 @@ export default function ZapCommand() {
         checkApproval();
         fetchBalances();
       }
-    }, [address, web3, fetchBalances]);
+    }, [address, web3, fetchBalances, checkApproval]);
 
     useEffect(() => {
       if(!Boolean(showIndex && subInfo.contract)) return;
       const item = allowance.filter(item => { return item.name === tokens[showIndex].name })[0]
       console.log(item)
       const pool = item.pools.filter(item => { return item.name === subInfo.contract.name })[0]
-      setIsApproval(!Boolean(pool.allowance==0))
-    }, [tokens, showIndex, address, subInfo.contract]);
+      setIsApproval(!Boolean(pool.allowance===0))
+    }, [tokens, showIndex, address, subInfo.contract, allowance]);
 
     const onFetchApproval = () => {
       console.log(Boolean(subInfo.contract)?'1':'2')
@@ -59,11 +59,11 @@ export default function ZapCommand() {
     const onFetchZapOrSwap = () => {
       fetchZapOrSwap(tokens[showIndex].name, subInfo.name, new BigNumber(sendJson.num).multipliedBy(new BigNumber(10).exponentiatedBy(tokens[showIndex].decimals)).toString(10))
     }
-    
+
     const handleMainDropdownClick = (event) => {
         setShowIndex(event.key);
         setSendJson({'num':0,'slider':0});
-        if(!tokens[event.key].receivableList.find((item)=>{return item.name==subInfo.name})){
+        if(!tokens[event.key].receivableList.find((item)=>{return item.name=subInfo.name})){
             setSubInfo({});
         }
     };
@@ -71,7 +71,7 @@ export default function ZapCommand() {
     tokens.map((item,index)=>{
         mainDropdownList.push(
             <div className={classes.memuStyle} key={index}>
-                <Avatar 
+                <Avatar
                     alt={item.name}
                     src={require(`../../../images/${item.name}-logo.png`)}
                     className={classNames({
@@ -86,7 +86,7 @@ export default function ZapCommand() {
     });
 
     const handleSubDropdownClick = (event) => {
-        let targetInfo = tokens[showIndex].receivableList.find((item)=>{return item.name==event.key})
+        let targetInfo = tokens[showIndex].receivableList.find((item)=>{return item.name===event.key})
         if(targetInfo){
             setSubInfo(targetInfo);
         }else{
@@ -97,7 +97,7 @@ export default function ZapCommand() {
     const singleSubDropDownNode = (item) => {
         return (
             <div className={classes.subMemuStyle} key={item.name}>
-                <Avatar 
+                <Avatar
                     alt={item.name}
                     src={require(`../../../images/${item.name}-logo.png`)}
                     className={classNames({
@@ -110,7 +110,7 @@ export default function ZapCommand() {
                     item.needTUSD && (
                         <div className={classes.subMemuStyle}>
                             <span style={{margin:'0 8px'}}>+</span>
-                            <Avatar 
+                            <Avatar
                                 alt='TUSD'
                                 src={require(`../../../images/TUSD-logo.png`)}
                                 className={classNames({
@@ -125,9 +125,9 @@ export default function ZapCommand() {
             </div>
         )
     }
-    let subDropdownList = [];
-    tokens[showIndex].receivableList.map((item)=>{
-        subDropdownList.push(singleSubDropDownNode(item))
+    // let subDropdownList = [];
+    let subDropdownList = tokens[showIndex].receivableList.map((item) => {
+        return singleSubDropDownNode(item)
     })
 
     const [sendJson,setSendJson] = useState({'num':0,'slider':0});
@@ -151,7 +151,7 @@ export default function ZapCommand() {
     const changeSliderVal = (total,event,sliderNum) => {
         event.stopPropagation();
         setSendJson({
-            'num': sliderNum == 0 ? 0: calculateReallyNum(total,sliderNum),
+            'num': sliderNum === 0 ? 0: calculateReallyNum(total,sliderNum),
             'slider': sliderNum,
         })
     }
@@ -172,7 +172,7 @@ export default function ZapCommand() {
                         <div className={classes.boxHeaderSub}>{`${t('Swap-Balance')}: ${balanceTotal.toFormat(tokens[showIndex].decimals)} ${tokens[showIndex].name}`}</div>
                     </div>
                     <FormControl fullWidth variant="outlined">
-                        <CustomOutlinedInput 
+                        <CustomOutlinedInput
                             value={sendJson.num}
                             onChange={changeMainInput.bind(this,balanceTotal.toNumber(),tokens[showIndex].decimals)}
                             endAdornment={
@@ -192,7 +192,7 @@ export default function ZapCommand() {
                                         darkModal
                                         buttonText={
                                             <div className={classes.memuStyle}>
-                                                <Avatar 
+                                                <Avatar
                                                     alt={tokens[showIndex].name}
                                                     src={require(`../../../images/${tokens[showIndex].name}-logo.png`)}
                                                     className={classNames({
@@ -216,8 +216,8 @@ export default function ZapCommand() {
                             />
                     </FormControl>
                     <GridItem>
-                        <CustomSlider 
-                            aria-labelledby="continuous-slider" 
+                        <CustomSlider
+                            aria-labelledby="continuous-slider"
                             value={sendJson.slider}
                             onChange={changeSliderVal.bind(this,balanceTotal.toNumber())}
                             />
@@ -235,7 +235,7 @@ export default function ZapCommand() {
                             hoverColor='primary'
                             darkModal
                             buttonText={
-                                subInfo.name && tokens[showIndex].receivableList.find((item)=>{return item.name==subInfo.name}) &&
+                                subInfo.name && tokens[showIndex].receivableList.find((item)=>{return item.name===subInfo.name}) &&
                                 singleSubDropDownNode(subInfo)
                             }
                             buttonProps={{
@@ -246,7 +246,7 @@ export default function ZapCommand() {
                             />
                     </FormControl>
                 </div>
-                <Button 
+                <Button
                     style={{
                         width:'100%',
                         height:'64px',

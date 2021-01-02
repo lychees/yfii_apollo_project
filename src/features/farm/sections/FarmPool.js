@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {useState, useEffect} from 'react';
 import classNames from "classnames";
 import {useTranslation} from 'react-i18next';
@@ -28,7 +29,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import {Input} from "@material-ui/core";
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(farmPoolsStyle);
 
 export default function FarmPool(props) {
   const classes = useStyles();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const {address} = useConnectWallet();
   const {allowance, checkApproval} = useCheckApproval();
   const {pools} = useFetchPoolsInfo();
@@ -49,7 +50,7 @@ export default function FarmPool(props) {
   const {fetchClaim, fetchClaimPending} = useFetchClaim();
   const {fetchExit, fetchExitPending} = useFetchExit();
   const [index, setIndex] = useState(Number(props.match.params.index) - 1);
-  const [showInput, setShowInput] = useState(false);
+  // const [showInput, setShowInput] = useState(false);
   const [isStake, setIsStake] = useState(true);
   // const [ pageSize,setPageSize ] = useState('');
   const [isNeedApproval, setIsNeedApproval] = useState(true);
@@ -61,9 +62,9 @@ export default function FarmPool(props) {
   const [myBalance, setMyBalance] = useState(new BigNumber(balance[index]));
   const [myCurrentlyStaked, setMyCurrentlyStaked] = useState(new BigNumber(currentlyStaked[index]));
   const [myRewardsAvailable, setMyRewardsAvailable] = useState(new BigNumber(rewardsAvailable[index]));
-  const [myHalfTime, setMyHalfTime] = useState(`0day 00:00:00`);
+  // const [myHalfTime, setMyHalfTime] = useState(`0day 00:00:00`);
   const [inputVal, setInputVal] = useState(0);
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const [anchorEl, setAnchorEl] = useState(null);
   // 弹窗
   const [dialogShow, setDialogShow] = useState(false);
   // 存入、解除质押 弹窗类型
@@ -71,16 +72,16 @@ export default function FarmPool(props) {
 
   useEffect(() => {
     setIndex(Number(props.match.params.index) - 1);
-  }, [Number(props.match.params.index)]);
+  }, [props.match.params.index]);
 
   useEffect(() => {
     setIsNeedApproval(Boolean(allowance[index] === 0));
     // setIsNeedApproval(false);
-  }, [allowance[index], index]);
+  }, [allowance, index]);
 
   useEffect(() => {
     setApprovalAble(!Boolean(fetchApprovalPending[index]));
-  }, [fetchApprovalPending[index], index]);
+  }, [fetchApprovalPending, index]);
 
   const onApproval = () => {
     fetchApproval(index);
@@ -88,7 +89,7 @@ export default function FarmPool(props) {
 
   useEffect(() => {
     setStakeAble(!Boolean(fetchStakePending[index]));
-  }, [fetchStakePending[index], index]);
+  }, [fetchStakePending, index]);
 
   const onStake = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -100,7 +101,7 @@ export default function FarmPool(props) {
     const currentlyStakedIs0 = currentlyStaked[index] === 0;
     setWithdrawAble(!Boolean(isPending || currentlyStakedIs0));
     // setWithdrawAble(true)
-  }, [currentlyStaked[index], fetchWithdrawPending[index], index]);
+  }, [currentlyStaked, fetchWithdrawPending, index]);
 
   const onWithdraw = () => {
     const amount = new BigNumber(inputVal).multipliedBy(new BigNumber(10).exponentiatedBy(pools[index].tokenDecimals)).toString(10);
@@ -111,7 +112,7 @@ export default function FarmPool(props) {
     const isPending = Boolean(fetchClaimPending[index]);
     const rewardsAvailableIs0 = rewardsAvailable[index] === 0;
     setClaimAble(!Boolean(isPending || rewardsAvailableIs0));
-  }, [rewardsAvailable[index], fetchClaimPending[index], index]);
+  }, [fetchClaimPending, index, rewardsAvailable]);
 
   const onClaim = () => {
     fetchClaim(index);
@@ -128,7 +129,7 @@ export default function FarmPool(props) {
     const rewardsAvailableIs0 = rewardsAvailable[index] === 0;
     const currentlyStakedAndRewardsAvailableIs0 = Boolean(currentlyStakedIs0 && rewardsAvailableIs0);
     setExitAble(!Boolean(isPending || currentlyStakedAndRewardsAvailableIs0));
-  }, [currentlyStaked[index], rewardsAvailable[index], fetchExitPending[index], index, new Date()]);
+  }, [currentlyStaked, fetchExitPending, index, rewardsAvailable]);
 
   const onExit = () => {
     fetchExit(index);
@@ -137,17 +138,17 @@ export default function FarmPool(props) {
   useEffect(() => {
     const amount = byDecimals(balance[index], pools[index].tokenDecimals);
     setMyBalance(amount);
-  }, [balance[index], index]);
+  }, [balance, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(currentlyStaked[index], pools[index].tokenDecimals);
     setMyCurrentlyStaked(amount);
-  }, [currentlyStaked[index], index]);
+  }, [currentlyStaked, index, pools]);
 
   useEffect(() => {
     const amount = byDecimals(rewardsAvailable[index], pools[index].earnedTokenDecimals);
     setMyRewardsAvailable(amount);
-  }, [rewardsAvailable[index], index]);
+  }, [index, pools, rewardsAvailable]);
 
   useEffect(() => {
     if (address) {
@@ -163,7 +164,7 @@ export default function FarmPool(props) {
       }, 10000);
       return () => clearInterval(id);
     }
-  }, [address, index]);
+  }, [address, checkApproval, fetchBalance, fetchCurrentlyStaked, fetchRewardsAvailable, index]);
 
 
   useEffect(() => {
@@ -219,7 +220,7 @@ export default function FarmPool(props) {
         <div className={classes.detailTitle}>{`Farm / ${pools[index].tokenDescription}`}</div>
         <div className={classes.detailDesc}>
           {`${t('Farm-Stake')} ${tokenDescription} ${t('Farm-CAN-GET')} ${earnedToken}，${t('Farm-Time')} ${earnTime / 7 / 24 / 3600} ${t('Farm-week')}。`} 
-          <a href={earnedTokenUrl} target={'_blank'} style={{color: 'rgb(54,85,152)'}}>{t('Farm-Know')} {earnedToken}</a>
+          <a href={earnedTokenUrl} target={'_blank'} rel="noopener noreferrer" style={{color: 'rgb(54,85,152)'}}>{t('Farm-Know')} {earnedToken}</a>
         </div>
       </Grid>
       <Grid item xs={12}>

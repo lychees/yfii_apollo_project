@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 import { earnContractABI } from '../config'
 import { useDispatch } from 'react-redux';
 import {
@@ -23,8 +23,8 @@ export function fetchPricePerFullShare(poolIndex, tokenIndex) {
       // args.error here is only for test coverage purpose.
       const { home, liquidity } = getState();
       const { address, web3 } = home;
-      const { pools, erc20Tokens } = liquidity;
-      const { canDepositTokenList, contractAddress } = pools[poolIndex];
+      const { pools } = liquidity;
+      const { contractAddress } = pools[poolIndex];
       const contract = new web3.eth.Contract(earnContractABI, contractAddress);
       contract.methods.getPricePerFullShare().call({ from: address }).then(
         data => {

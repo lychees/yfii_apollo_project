@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FARM_FETCH_STAKE_BEGIN,
   FARM_FETCH_STAKE_SUCCESS,

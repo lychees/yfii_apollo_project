@@ -1,7 +1,3 @@
-import {
-    defaultFont,
-  } from "assets/jss/material-kit-pro-react.js";
-
 const secondStyle = {
     opacity: '0.4',
     fontFamily: 'Helvetica',
@@ -64,7 +60,7 @@ const zapCommandStyle = theme => ({
     boxContainerInside:{
         borderRadius: '12px',
         background: '#635AFF',
-        borderRadius: '24px',
+        // borderRadius: '24px',
     },
     endAdornment:{
         display:'flex',
@@ -95,7 +91,7 @@ const zapCommandStyle = theme => ({
         fontSize: '18px',
         color: '#FFFFFF',
         lineHeight: '24px',
-        fontWeight: '600',
+        // fontWeight: '600',
         boxShadow:'0 2px 2px 0 #353848',
         textAlign:'right',
         padding:'18.5px 18px',

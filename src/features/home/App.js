@@ -15,7 +15,7 @@ import { useConnectWallet, useDisconnectWallet } from './redux/hooks';
 import i18next from 'i18next';
 //  web3Modal
 import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+// import WalletConnectProvider from "@walletconnect/web3-provider";
 //  core pages
 //  style for this page
 import appStyle from "./jss/appStyle.js";
@@ -57,13 +57,13 @@ export default function App({ children }) {
     if (web3Modal && (web3Modal.cachedProvider || window.ethereum)) {
       connectWallet(web3Modal);
     }
-  }, [web3Modal, connectWallet, window.ethereum])
+  }, [web3Modal, connectWallet])
 
   useEffect(() => {
     if (web3 && address && !connectWalletPending && networkId && Boolean(networkId !== Number(process.env.NETWORK_ID))) {
       alert(t('App-SnackBarText'))
     }
-  }, [web3, address, networkId])
+  }, [web3, address, networkId, connectWalletPending, t])
 
   return (
     <SnackbarProvider>
