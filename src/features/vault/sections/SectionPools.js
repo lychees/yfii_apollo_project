@@ -33,7 +33,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import { useSnackbar } from 'notistack';
 //  hooks
 import { useConnectWallet } from '../../home/redux/hooks';
-import { useFetchBalances, useFetchPoolBalances, useFetchApproval, useFetchDeposit, useFetchWithdraw, useFetchContractApy } from '../redux/hooks';
+import { useFetchBalances, useFetchPoolBalances, useFetchApproval, useFetchDeposit, useFetchWithdraw, useFetchContractApy, useFetchExit } from '../redux/hooks';
 import CustomSlider from 'components/CustomSlider/CustomSlider';
 
 import sectionPoolsStyle from "../jss/sections/sectionPoolsStyle";
@@ -56,6 +56,7 @@ export default function SectionPools() {
   const { fetchApproval, fetchApprovalPending } = useFetchApproval();
   const { fetchDeposit, fetchDepositEth, fetchDepositPending } = useFetchDeposit();
   const { fetchWithdraw, fetchWithdrawEth, fetchWithdrawPending } = useFetchWithdraw();
+  const { fetchExit } = useFetchExit();
   const { contractApy, fetchContractApy } = useFetchContractApy();
 
   const [ depositedBalance, setDepositedBalance ] = useState({});
@@ -197,8 +198,12 @@ export default function SectionPools() {
       ).catch(
         error => enqueueSnackbar(`Withdraw error: ${error}`, {variant: 'error'})
       )
-    }
-    
+    } 
+  }
+
+  // 退出
+  const onExit = (pool, index, isAll, singleDepositedBalance, event) => {
+    fetchExit(index);
   }
 
   const openCard = id => {
@@ -598,9 +603,9 @@ export default function SectionPools() {
                                 round
                                 type="button"
                                 color="primary"
-                                onClick={onWithdraw.bind(this, pool, index, true, singleDepositedBalance)}
+                                onClick={onExit.bind(this, pool, index, true, singleDepositedBalance)}
                                 >
-                                {fetchWithdrawPending[index] ? `${t('Vault-WithdrawING')}`: `${t('Vault-WithdrawButtonAll')}`}
+                                {fetchWithdrawPending[index] ? `${t('Vault-WithdrawING')}`: `${t('Vault-Exit')}`}
                             </Button>
                         </div>
                     </Grid>
