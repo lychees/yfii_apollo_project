@@ -24,7 +24,7 @@ import CustomSlider from 'components/CustomSlider/CustomSlider';
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 //  hooks
 import { useConnectWallet } from '../../home/redux/hooks';
-import { useFetchBalance, useFetchBalances, useFetchPoolsInfo, useCheckApproval, useFetchApproval, useFetchDeposit, useFetchWithdraw, useFetchPricePerFullShare, useFetchPairPriceOut } from '../redux/hooks';
+import { useFetchBalance, useFetchBalances, useFetchPoolsInfo, useCheckApproval, useFetchApproval, useFetchDeposit, useFetchWithdraw, useFetchPricePerFullShare, useFetchPairPriceOut, useFetchExit } from '../redux/hooks';
 import sectionPoolsStyle from "../jss/sections/sectionPoolsStyle";
 import { inputLimitPass } from 'features/helpers/utils';
 
@@ -52,6 +52,7 @@ export default function SectionPoolsCard(props) {
   const { fetchDeposit } = useFetchDeposit();
   const { fetchWithdraw } = useFetchWithdraw();
   const { fetchPairPriceOut } = useFetchPairPriceOut();
+  const { fetchExit } = useFetchExit();
   const { fetchPricePerFullShare } = useFetchPricePerFullShare();
   const { etherBalance, fetchBalance } = useFetchBalance();
   const { erc20Tokens, fetchBalances } = useFetchBalances();
@@ -216,6 +217,12 @@ export default function SectionPoolsCard(props) {
     }
     let amount = new BigNumber(withdrawAmount[poolIndex]).multipliedBy(new BigNumber(10).exponentiatedBy(getTockenDecimals(pool.earnedToken))).toString(10)
     fetchWithdraw(amount, poolIndex, tokenIndex, isAll)
+  }
+
+  // 退出
+  const onExit = (event) => {
+    const exitIndex = selectedTokenInfo.withdrawMax.toString();
+    fetchExit(exitIndex);
   }
 
   const createCardFirstDropdownList = (canDepositTokenList) => {
@@ -530,7 +537,7 @@ export default function SectionPoolsCard(props) {
                     disabled={!withdrawAble}
                     onClick={onWithdraw.bind(this, true)}
                     >
-                    {pool.fetchWithdrawPending[tokenIndex] ? `${t('Vault-WithdrawING')}`: `${t('Vault-WithdrawButtonAll')}`}
+                    {pool.fetchWithdrawPending[tokenIndex] ? `${t('Vault-WithdrawING')}`: `${t('Vault-Exit')}`}
                   </Button>
                 </div>
               </Grid>
